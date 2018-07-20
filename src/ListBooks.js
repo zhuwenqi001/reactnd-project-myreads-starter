@@ -1,24 +1,18 @@
-import React, {
-	Component
-} from 'react'
+import React from 'react'
 import {
 	Link
 } from 'react-router-dom'
 import Books from './Books'
 
-class ListBooks extends Component {
-	state = {
-
-	}
-	render() {
-		const {
-			shelf,
-			books,
-			onSelect
-		} = this.props;
-		let shelfShow = shelf.filter(item => (item.attr !== 'none')); //筛选当前书架展示 去掉none
-		return (
-			<div className="list-books">
+function ListBooks(props) {
+	const {
+		shelf,
+		books,
+		onSelect
+	} = props;
+	let shelfShow = shelf.filter(item => (item.attr !== 'none')); //筛选当前书架展示 去掉none
+	return (
+		<div className="list-books">
 				<div className="list-books-title">
 	              <h1>MyReads</h1>
 	            </div>
@@ -37,8 +31,6 @@ class ListBooks extends Component {
             	<Link to='/search'>Add a book</Link>
             </div>
           </div>
-		)
-	}
+	)
 }
-
 export default ListBooks;
