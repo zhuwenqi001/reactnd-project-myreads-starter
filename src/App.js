@@ -16,7 +16,8 @@ class BooksApp extends React.Component {
       this.setState({
         books: books
       })
-      console.log(this.state.books)
+    }).catch((error) => {
+      alert('数据请求错误！')
     })
 
   }
@@ -37,32 +38,19 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  //移动项
+  // 图书处理
   movingBook = (book, shelf) => {
-    //改变状态 筛选改变项
+    book.shelf = shelf;
     this.setState(state => ({
       books: state.books.filter(bookitem => {
-        if (bookitem.id === book.id) { //当前书架移动
-          bookitem.shelf = shelf;
-        }
-        return true;
-      })
+        if (bookitem.id !== book.id)
+          return true;
+      }).concat(book)
     }))
     //后端数据修改
     BooksAPI.update(book, shelf);
-  }
 
-  //添加项
-  addBook = (book, shelf) => {
-    book.shelf = shelf;
-    //改变状态 筛选改变项
-    this.setState(state => ({
-      books: state.books.concat(book)
-    }))
-    //后端数据修改
-    BooksAPI.update(book, shelf);
   }
-
 
   render() {
     return (
@@ -71,7 +59,7 @@ class BooksApp extends React.Component {
           <ListBooks shelf={this.state.shelf} books={this.state.books} onSelect={this.movingBook}/>
         )}/>  
         <Route path='/search' render={()=>(
-          <SearchBook shelf={this.state.shelf} books={this.state.books} onSelect={this.addBook}/>
+          <SearchBook shelf={this.state.shelf} books={this.state.books} onSelect={this.movingBook}/>
         )}/>
       </div>
     )
